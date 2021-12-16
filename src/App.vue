@@ -1,11 +1,12 @@
 <template>
-  <div></div>
-</template>
+  <Layout />
 
+</template>
 <script lang="ts">
+import Layout from './Layout/index.vue'
 export default {
   name: "App",
-  components: {},
+  components: { Layout },
   setup() {
     return {};
   },
