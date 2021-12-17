@@ -5,6 +5,7 @@
       :key="todo.id"
       :todo="todo"
       :deleteTodo="deleteTodo"
+      :updateTodo="updateTodo"
       :index="index"
     />
   </ul>
@@ -16,7 +17,7 @@ import Item from "./Item.vue";
 export default defineComponent({
   name: "List",
   components: { Item },
-  props: ["todos", "deleteTodo"],
+  props: ["todos", "deleteTodo", "updateTodo"],
   setup() {
     return {};
   },

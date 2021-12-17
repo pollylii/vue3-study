@@ -4,7 +4,7 @@
     @mouseleave="mouseHandler(false)"
     :style="{ backgroundColor: bgColor, color: myColor }"
   >
-    <el-checkbox :label="todo.title"></el-checkbox>
+    <el-checkbox :label="todo.title" v-model="isComplete"></el-checkbox>
     <el-button size="mini" type="danger" v-show="isBtnShow" @click="delTodo"
       >删除</el-button
     >
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref,computed } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { Todo } from "../types/todo";
 export default defineComponent({
@@ -24,6 +24,10 @@ export default defineComponent({
       required: true,
     },
     deleteTodo: {
+      type: Function,
+      required: true,
+    },
+    updateTodo: {
       type: Function,
       required: true,
     },
@@ -74,12 +78,23 @@ export default defineComponent({
           });
         });
     };
+    // 计算属性的方式----让当前的复选框选中/不选中
+    const isComplete = computed({
+        get(){
+            return props.todo.isCompleted
+        },
+        set(val){
+            // todo对象中的isCompleted属性操作
+            props.updateTodo(props.todo, val)
+        }
+    })
     return {
       mouseHandler,
       bgColor,
       myColor,
       isBtnShow,
       delTodo,
+      isComplete,
     };
   },
 });

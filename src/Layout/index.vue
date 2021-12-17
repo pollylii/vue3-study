@@ -2,7 +2,7 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <Header :addTodo="addTodo" />
-      <List :todos="todos" :deleteTodo="deleteTodo" />
+      <List :todos="todos" :deleteTodo="deleteTodo" :updateTodo="updateTodo" />
       <Footer />
     </div>
   </div>
@@ -33,13 +33,18 @@ export default defineComponent({
       state.todos.unshift(todo);
     };
     // 删除数据
-    const  deleteTodo = (index:number) => {
-        state.todos.splice(index,1);
-    }
+    const deleteTodo = (index: number) => {
+      state.todos.splice(index, 1);
+    };
+    // 修改todo的isCompleted属性状态
+    const updateTodo = (todo: Todo, isCompleted: boolean) => {
+      todo.isCompleted = isCompleted;
+    };
     return {
       ...toRefs(state),
       addTodo,
       deleteTodo,
+      updateTodo,
     };
   },
 });
