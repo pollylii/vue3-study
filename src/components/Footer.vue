@@ -7,7 +7,7 @@
       <span>已完成 {{ count }}</span>
       <span>/全部 {{ todos.length }}</span>
     </span>
-    <el-button class="btn" size="mini" type="danger">清除已完成任务</el-button>
+    <el-button class="btn" size="mini" type="danger" @click="clearCompletedAll">清除已完成任务</el-button>
   </div>
 </template>
 
@@ -23,6 +23,10 @@ export default defineComponent({
       required: true,
     },
     checkAll: {
+      type: Function,
+      required: true,
+    },
+    clearCompletedAll: {
       type: Function,
       required: true,
     },

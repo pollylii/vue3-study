@@ -3,7 +3,7 @@
     <div class="todo-wrap">
       <Header :addTodo="addTodo" />
       <List :todos="todos" :deleteTodo="deleteTodo" :updateTodo="updateTodo" />
-      <Footer :todos="todos" :checkAll="checkAll"/>
+      <Footer :todos="todos" :checkAll="checkAll" :clearCompletedAll="clearCompletedAll"/>
     </div>
   </div>
 </template>
@@ -48,12 +48,17 @@ export default defineComponent({
       })
 
     }
+    //清理左右选中的数据
+    const clearCompletedAll= ()=>{
+      state.todos= state.todos.filter(todo=>!todo.isCompleted)
+    }
     return {
       ...toRefs(state),
       addTodo,
       deleteTodo,
       updateTodo,
       checkAll,
+      clearCompletedAll,
     };
   },
 });
