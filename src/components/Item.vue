@@ -1,22 +1,86 @@
 <template>
-  <li>
+  <li
+    @mouseenter="mouseHandler(true)"
+    @mouseleave="mouseHandler(false)"
+    :style="{ backgroundColor: bgColor, color: myColor }"
+  >
     <el-checkbox :label="todo.title"></el-checkbox>
-    <el-button class="btn" size="mini" type="">删除</el-button>
+    <el-button size="mini" type="danger" v-show="isBtnShow" @click="delTodo"
+      >删除</el-button
+    >
   </li>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import { ElMessageBox, ElMessage } from "element-plus";
 import { Todo } from "../types/todo";
 export default defineComponent({
   name: "Item",
   components: {},
   props: {
-    todo: Object as () => Todo, // 函数返回的是Todo类型
+    todo: {
+      type: Object as () => Todo, // 函数返回的是Todo类型
+      required: true,
+    },
+    deleteTodo: {
+      type: Function,
+      required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props) {
-    console.log(78789787878978, props.todo);
-    return {};
+    // 背景色
+    const bgColor = ref("white");
+    // 前景色
+    const myColor = ref("black");
+    // 设置删除按钮默认不显示
+    const isBtnShow = ref(false);
+    // 鼠标进入事件和离开事件的回调函数
+    const mouseHandler = (flag: boolean) => {
+      if (flag) {
+        // 鼠标进入
+        bgColor.value = "pink";
+        myColor.value = "green";
+        isBtnShow.value = true;
+      } else {
+        // 鼠标出去
+        bgColor.value = "white";
+        myColor.value = "black";
+        isBtnShow.value = false;
+      }
+    };
+    //删除数据
+    const delTodo = () => {
+      ElMessageBox.confirm("确定删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "关闭",
+        type: "warning",
+      })
+        .then(() => {
+          props.deleteTodo(props.index);
+          ElMessage({
+            type: "success",
+            message: "删除成功！",
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "取消删除！",
+          });
+        });
+    };
+    return {
+      mouseHandler,
+      bgColor,
+      myColor,
+      isBtnShow,
+      delTodo,
+    };
   },
 });
 </script>
@@ -28,20 +92,14 @@ li {
   line-height: 36px;
   border-bottom: 1px solid #dddddd;
 }
-li label {
-  float: left;
-  cursor: pointer;
-}
+
 li:before {
   content: inherit;
 }
-li .btn {
+li .el-button {
   float: right;
-  /*display: none;*/
+  /* display: none; */
   margin-top: 3px;
-}
-li .btn:hover {
-  display: block;
 }
 li label li input {
   vertical-align: middle;
